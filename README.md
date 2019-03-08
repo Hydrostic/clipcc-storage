@@ -1,26 +1,23 @@
-## scratch-storage
-#### Scratch Storage is a library for loading and storing project and asset files for Scratch 3.0
+## clipcc-storage
+#### Clipcc Storage is an NPM package of using ali-oss to record works based on scratch-storage for secondary development.
 
-[![Build Status](https://travis-ci.org/LLK/scratch-storage.svg?branch=develop)](https://travis-ci.org/LLK/scratch-storage)
-[![Coverage Status](https://coveralls.io/repos/github/LLK/scratch-storage/badge.svg?branch=develop)](https://coveralls.io/github/LLK/scratch-storage?branch=develop)
-[![Greenkeeper badge](https://badges.greenkeeper.io/LLK/scratch-storage.svg)](https://greenkeeper.io/)
 
 ## Installation
 This requires you to have Node.js installed.
 
 In your own Node.js environment/application:
 ```bash
-npm install https://github.com/LLK/scratch-storage.git
+npm install https://github.com/Hydrostic/clipcc-storage.git
 ```
 
 If you want to edit/play yourself (requires Git):
 ```bash
-git clone https://github.com/LLK/scratch-storage.git
-cd scratch-storage
+git clone https://github.com/Hydrostic/clipcc-storage.git
+cd clipcc-storage
 npm install
 ```
 
-## Using scratch-storage
+## Using clipcc-storage
 
 ### From HTML
 
@@ -139,15 +136,3 @@ npm install
 ```
 
 Now you're ready to make commits using `git cz`.
-
-## Breaking changes
-If you're committing a change that makes an API change, or will
-otherwise require changes to existing code, ensure your commit specifies a
-breaking change.  In your commit body, prefix the changes with "BREAKING CHANGE: "
-This will cause a major version bump so downstream projects must choose to upgrade
-and will not break the build unexpectedly.
-
-## Donate
-We provide [Scratch](https://scratch.mit.edu) free of charge, and want to keep it that way! Please consider making a
-[donation](https://secure.donationpay.org/scratchfoundation/) to support our continued engineering, design, community,
-and resource development efforts. Donations of any size are appreciated. Thank you!
