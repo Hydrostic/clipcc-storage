@@ -13,7 +13,6 @@
   "scripts": {
     "build": "webpack --progress --colors --bail",
     "coverage": "tap ./test/{unit,integration}/*.js --coverage --coverage-report=lcov",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
     "lint": "eslint .",
     "tap-integration": "tap ./test/integration/*.js",
     "tap-unit": "tap ./test/unit/*.js",
