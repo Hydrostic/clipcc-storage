@@ -1,11 +1,10 @@
-module.exports = () => {
-    const config = {}
-    config.oss = {
+const config = {
+    oss: {
         region: '',
         accessKeyId: '',
         accessKeySecret: '',
-        project: { bucket: '', secure: true },
-        asset: { bucket: '', secure: true }
+        project: {bucket: '', secure: true},
+        asset: {bucket: '', secure: true}
     }
-    return config
-}
+};
+export default config;
