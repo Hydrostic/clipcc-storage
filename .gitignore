@@ -14,6 +14,3 @@ npm-*
 
 # Build
 /dist
-
-# Configure
-config.js

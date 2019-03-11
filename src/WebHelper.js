@@ -2,10 +2,11 @@ const nets = require('nets');
 const OSS = require('ali-oss');
 
 const log = require('./log');
-const config = require('../config');
 
 const Asset = require('./Asset');
 const Helper = require('./Helper');
+
+const Cookies = require('js-cookie');
 
 /**
  * @typedef {function} UrlFunction - A function which computes a URL from asset information.
@@ -95,19 +96,19 @@ class WebHelper extends Helper {
                             url: reqConfig
                         };
                     }
+                    const sts = Cookies.get('CLIPSTS');
+                    const regionName = Cookies.get('CLIPOSSR');
                     const assetClient = new OSS({
-                        region: config.oss.region,
-                        accessKeyId: config.oss.accessKeyId,
-                        accessKeySecret: config.oss.accessKeySecret,
-                        bucket: config.oss.asset.bucket,
-                        secure: config.oss.asset.secure
+                        region: regionName,
+                        stsToken: sts,
+                        bucket: Cookies.get('CLIPOSSA'),
+                        secure: true
                     });
                     const projectClient = new OSS({
-                        region: config.oss.region,
-                        accessKeyId: config.oss.accessKeyId,
-                        accessKeySecret: config.oss.accessKeySecret,
-                        bucket: config.oss.project.bucket,
-                        secure: config.oss.project.secure
+                        region: regionName,
+                        stsToken: sts,
+                        bucket: Cookies.get('CLIPOSSP'),
+                        secure: true
                     });
                     if (reqConfig.url.indexOf('projects://') === -1) {
                         // projects

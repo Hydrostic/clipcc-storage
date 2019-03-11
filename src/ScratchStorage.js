@@ -7,6 +7,9 @@ const _Asset = require('./Asset');
 const _AssetType = require('./AssetType');
 const _DataFormat = require('./DataFormat');
 
+const Cookies = require('js-cookie');
+const request = require('request');
+
 class ScratchStorage {
     constructor () {
         this.defaultAssetId = {};
@@ -161,7 +164,26 @@ class ScratchStorage {
     setDefaultAssetId (type, id) {
         this.defaultAssetId[type.name] = id;
     }
-
+    fetchSTSToken (fetchUrl) {
+        if (!Cookies.get('CLIPSTS')) {
+            const options = {
+                url: fetchUrl,
+                headers: {
+                    authentication: Cookies.get('CLIPSS')
+                },
+                form: {fetchCreateTime: new Date().getTime()}
+            };
+            request.post(options, (err, httpResponse, body) => {
+                if (err || httpResponse / 100 >= 3) {
+                    throw new Error('fetchSTSTokenError');
+                }
+                Cookies.set('CLIPSTS', body.return_data.sts, {expires: 0.1});
+                Cookies.set('CLIPOSSBP', body.return_data.oss.bucket.project, {expires: 0.1});
+                Cookies.set('CLIPOSSBA', body.return_data.oss.bucket.asset, {expires: 0.1});
+                Cookies.set('CLIPOSSR', body.return_data.oss.region, {expires: 0.1});
+            });
+        }
+    }
     /**
      * Fetch an asset by type & ID.
      * @param {AssetType} assetType - The type of asset to fetch. This also determines which asset store to use.
@@ -184,31 +206,30 @@ class ScratchStorage {
             const tryNextHelper = () => {
                 if (helperIndex < helpers.length) {
                     const helper = helpers[helperIndex++];
-                    helper.load(assetType, assetId, dataFormat)
-                        .then(
-                            asset => {
-                                if (asset === null) {
-                                    tryNextHelper();
-                                } else {
-                                    // TODO? this.localHelper.cache(assetType, assetId, asset);
-                                    if (helper !== this.builtinHelper && assetType.immutable) {
-                                        asset.assetId = this.builtinHelper._store(
-                                            assetType,
-                                            asset.dataFormat,
-                                            asset.data,
-                                            assetId
-                                        );
-                                    }
-                                    // Note that other attempts may have caused errors, effectively suppressed here.
-                                    resolve(asset);
-                                }
-                            },
-                            error => {
-                                errors.push(error);
-                                // TODO: maybe some types of error should prevent trying the next helper?
+                    helper.load(assetType, assetId, dataFormat).then(
+                        asset => {
+                            if (asset === null) {
                                 tryNextHelper();
+                            } else {
+                                // TODO? this.localHelper.cache(assetType, assetId, asset);
+                                if (helper !== this.builtinHelper && assetType.immutable) {
+                                    asset.assetId = this.builtinHelper._store(
+                                        assetType,
+                                        asset.dataFormat,
+                                        asset.data,
+                                        assetId
+                                    );
+                                }
+                                // Note that other attempts may have caused errors, effectively suppressed here.
+                                resolve(asset);
                             }
-                        );
+                        },
+                        error => {
+                            errors.push(error);
+                            // TODO: maybe some types of error should prevent trying the next helper?
+                            tryNextHelper();
+                        }
+                    );
                 } else if (errors.length === 0) {
                     // Nothing went wrong but we couldn't find the asset.
                     resolve(null);
@@ -232,14 +253,14 @@ class ScratchStorage {
      */
     store (assetType, dataFormat, data, assetId) {
         dataFormat = dataFormat || assetType.runtimeFormat;
-        return new Promise(
-            (resolve, reject) =>
-                this.webHelper.store(assetType, dataFormat, data, assetId)
-                    .then(body => {
-                        this.builtinHelper._store(assetType, dataFormat, data, body.id);
-                        return resolve(body);
-                    })
-                    .catch(error => reject(error))
+        return new Promise((resolve, reject) =>
+            this.webHelper
+                .store(assetType, dataFormat, data, assetId)
+                .then(body => {
+                    this.builtinHelper._store(assetType, dataFormat, data, body.id);
+                    return resolve(body);
+                })
+                .catch(error => reject(error))
         );
     }
 }
