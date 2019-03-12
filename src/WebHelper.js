@@ -97,17 +97,17 @@ class WebHelper extends Helper {
                         };
                     }
                     const sts = Cookies.get('CLIPSTS');
-                    const regionName = Cookies.get('CLIPOSSR');
+                    const regionName = Cookies.getJSON('CLIPOSSI').region;
                     const assetClient = new OSS({
                         region: regionName,
                         stsToken: sts,
-                        bucket: Cookies.get('CLIPOSSA'),
+                        bucket: Cookies.getJSON('CLIPOSSI').asset.name,
                         secure: true
                     });
                     const projectClient = new OSS({
                         region: regionName,
                         stsToken: sts,
-                        bucket: Cookies.get('CLIPOSSP'),
+                        bucket: Cookies.getJSON('CLIPOSSI').project.name,
                         secure: true
                     });
                     if (reqConfig.url.indexOf('projects://') === -1) {

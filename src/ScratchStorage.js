@@ -168,19 +168,14 @@ class ScratchStorage {
         if (!Cookies.get('CLIPSTS')) {
             const options = {
                 url: fetchUrl,
-                headers: {
-                    authentication: Cookies.get('CLIPSS')
-                },
-                form: {fetchCreateTime: new Date().getTime()}
+                form: {fetchCreateTime: new Date().getTime(), uuid: Cookies.get('CLIPUUID')}
             };
             request.post(options, (err, httpResponse, body) => {
                 if (err || httpResponse / 100 >= 3) {
                     throw new Error('fetchSTSTokenError');
                 }
-                Cookies.set('CLIPSTS', body.return_data.sts, {expires: 0.1});
-                Cookies.set('CLIPOSSBP', body.return_data.oss.bucket.project, {expires: 0.1});
-                Cookies.set('CLIPOSSBA', body.return_data.oss.bucket.asset, {expires: 0.1});
-                Cookies.set('CLIPOSSR', body.return_data.oss.region, {expires: 0.1});
+                Cookies.set('CLIPSTS', body.return_data.sts, {expires: 0.5});
+                Cookies.set('CLIPOSSI', body.return_data.oss_info, {expires: 0.5});
             });
         }
     }
