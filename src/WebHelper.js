@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable handle-callback-err */
 const nets = require('nets');
 const OSS = require('ali-oss');
 
@@ -189,7 +191,7 @@ class WebHelper extends Helper {
         return new Promise((resolve, reject) => {
             if (!store) return reject('No appropriate stores');
 
-            const reqConfig = create ? store.create(asset) : store.update(asset);
+            let reqConfig = create ? store.create(asset) : store.update(asset);
 
             if (typeof reqConfig === 'string') {
                 reqConfig = {
@@ -200,6 +202,7 @@ class WebHelper extends Helper {
                 Object.assign(
                     {
                         body: data,
+                        // eslint-disable-next-line no-undef
                         method: method,
                         encoding: undefined // eslint-disable-line no-undefined
                     },

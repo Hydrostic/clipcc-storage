@@ -8,7 +8,7 @@ const _AssetType = require('./AssetType');
 const _DataFormat = require('./DataFormat');
 
 const Cookies = require('js-cookie');
-const request = require('request');
+const request = require('browser-request');
 
 class ScratchStorage {
     constructor () {
