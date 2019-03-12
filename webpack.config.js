@@ -7,15 +7,11 @@ const base = {
     module: {
         rules: [
             {
-                include: [
-                    path.resolve('src')
-                ],
+                include: [path.resolve('src')],
                 test: /\.js$/,
                 loader: 'babel-loader',
                 options: {
-                    presets: [
-                        ['@babel/preset-env', {targets: {browsers: ['last 3 versions', 'Safari >= 8', 'iOS >= 8']}}]
-                    ]
+                    presets: [['@babel/preset-env', {targets: {node: 'current'}, modules: false}]]
                 }
             }
         ]
