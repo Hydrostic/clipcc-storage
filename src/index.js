@@ -1,7 +1,7 @@
-const ScratchStorage = require('./ScratchStorage');
+import ScratchStorage from './ScratchStorage';
 
 /**
  * Export for use with NPM & Node.js.
  * @type {ScratchStorage}
  */
-module.exports = ScratchStorage;
+export default ScratchStorage;
