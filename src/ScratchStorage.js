@@ -1,14 +1,13 @@
+/* eslint-disable no-warning-comments */
 const log = require('./log');
 
 const BuiltinHelper = require('./BuiltinHelper');
 const WebHelper = require('./WebHelper');
+const OssHelper = require('./OssHelper');
 
 const _Asset = require('./Asset');
 const _AssetType = require('./AssetType');
 const _DataFormat = require('./DataFormat');
-
-const Cookies = require('js-cookie');
-const request = require('browser-request');
 
 class ScratchStorage {
     constructor () {
@@ -16,6 +15,7 @@ class ScratchStorage {
 
         this.builtinHelper = new BuiltinHelper(this);
         this.webHelper = new WebHelper(this);
+        this.OssHelper = new OssHelper(this);
         this.builtinHelper.registerDefaultAssets(this);
 
         this._helpers = [
@@ -131,6 +131,10 @@ class ScratchStorage {
         this.webHelper.addStore(types, getFunction, createFunction, updateFunction);
     }
 
+    addSTSSource (urlFunction) {
+        this.OssHelper.addFetchEvent(urlFunction);
+    }
+
     /**
      * Register a web-based source for assets. Sources will be checked in order of registration.
      * @deprecated Please use addWebStore
@@ -163,21 +167,6 @@ class ScratchStorage {
      */
     setDefaultAssetId (type, id) {
         this.defaultAssetId[type.name] = id;
-    }
-    fetchSTSToken (fetchUrl) {
-        if (!Cookies.get('CLIPSTS')) {
-            const options = {
-                url: fetchUrl,
-                form: {fetchCreateTime: new Date().getTime(), uuid: Cookies.get('CLIPUUID')}
-            };
-            request.post(options, (err, httpResponse, body) => {
-                if (err || httpResponse / 100 >= 3) {
-                    throw new Error('fetchSTSTokenError');
-                }
-                Cookies.set('CLIPSTS', body.return_data.sts, {expires: 0.5});
-                Cookies.set('CLIPOSSI', body.return_data.oss_info, {expires: 0.5});
-            });
-        }
     }
     /**
      * Fetch an asset by type & ID.
