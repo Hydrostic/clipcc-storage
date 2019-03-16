@@ -2,7 +2,7 @@ const Helper = require('./Helper');
 
 const Cookies = require('js-cookie');
 const request = require('browser-request');
-const CryptoJS = require('crypto-js');
+const CryptoJS = require('crypto');
 
 class OssHelper extends Helper {
     addFetchEvent (urlFunction) {
