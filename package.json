@@ -1,13 +1,13 @@
 {
   "name": "clipcc-storage",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "description": "Load and store project and asset files for Scratch 3.0",
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/Hydrostic/clipcc-storage#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/Hydrostic/clipcc-storage.git",
-    "sha": "1e86a160a1343f30a5238b3903d819ac47c33c30"
+    "sha": "38854fa0d04bffa6056ddb817d2f0b635c23c1ec"
   },
   "main": "./dist/node/scratch-storage.js",
   "browser": "./src/index.js",
