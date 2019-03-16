@@ -44,6 +44,7 @@
     "@commitlint/travis-cli": "7.2.1",
     "babel-eslint": "10.0.1",
     "babel-loader": "^8.0.4",
+    "crypto-js": "^3.1.9-1",
     "cz-conventional-changelog": "^2.0.0",
     "eslint": "5.7.0",
     "eslint-config-scratch": "5.0.0",

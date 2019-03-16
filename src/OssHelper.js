@@ -2,13 +2,16 @@ const Helper = require('./Helper');
 
 const Cookies = require('js-cookie');
 const request = require('browser-request');
+const CryptoJS = require('crypto-js');
 
 class OssHelper extends Helper {
     addFetchEvent (urlFunction) {
+        const createTime = new Date().getTime();
+        const encryptUuid = CryptoJS.AES.encrypt(Cookies.get('CLIPUUID'), createTime);
         if (!Cookies.get('CLIPSTS')) {
             const options = {
                 url: urlFunction(),
-                form: {fetchCreateTime: new Date().getTime(), uuid: Cookies.get('CLIPUUID')}
+                form: {fetchCreateTime: createTime, uuid: encryptUuid}
             };
             request.post(options, (err, httpResponse, body) => {
                 if (err || httpResponse / 100 >= 3) {
