@@ -2,12 +2,12 @@ const Helper = require('./Helper');
 
 const Cookies = require('js-cookie');
 const request = require('browser-request');
-const CryptoJS = require('crypto');
+const AES = require('crypto/aes');
 
 class OssHelper extends Helper {
     addFetchEvent (urlFunction) {
         const createTime = new Date().getTime();
-        const encryptUuid = CryptoJS.AES.encrypt(Cookies.get('CLIPUUID'), createTime);
+        const encryptUuid = AES.encrypt(Cookies.get('CLIPUUID'), createTime);
         if (!Cookies.get('CLIPSTS')) {
             const options = {
                 url: urlFunction(),
